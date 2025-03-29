@@ -1,6 +1,9 @@
 import streamlit as st
 from transformers import pipeline
 
+# ✅ Correct: Set page config before any UI rendering
+st.set_page_config(page_title="AI Email Summarizer", page_icon="📩")
+
 # Load the AI model for summarization
 @st.cache_resource
 def load_model():
@@ -8,15 +11,12 @@ def load_model():
 
 summarizer = load_model()
 
-# Streamlit Web App UI
-st.set_page_config(page_title="AI Email Summarizer", page_icon="📩")
+# Streamlit UI
 st.title("📩 AI Email Summarizer")
 st.write("Paste your email below and get a concise summary!")
 
-# Text Input for Email
 email_text = st.text_area("✉️ Enter Email Content:")
 
-# Summarize Button
 if st.button("Summarize Email"):
     if email_text.strip():
         with st.spinner("Generating summary..."):
@@ -26,6 +26,5 @@ if st.button("Summarize Email"):
     else:
         st.warning("Please enter an email to summarize.")
 
-# Footer
 st.markdown("---")
 st.caption("🚀 Powered by AI | Developed by CareerUpskillers")
