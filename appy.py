@@ -47,10 +47,18 @@ else:
 # --- Summarize Button ---
 if st.button("Summarize Email"):
     if email_text.strip():
-        with st.spinner("Generating summary..."):
-            summary = summarizer(email_text, max_length=50, min_length=10, do_sample=False)
-            st.subheader("📌 AI Summary:")
-            st.success(summary[0]['summary_text'])
+        word_count = len(email_text.strip().split())
+
+        if word_count < 20:
+            st.warning("⚠️ Please enter a longer email. Minimum 20 words required for a good summary.")
+        else:
+            with st.spinner("Generating summary..."):
+                try:
+                    summary = summarizer(email_text[:1024], max_length=50, min_length=10, do_sample=False)
+                    st.subheader("📌 AI Summary:")
+                    st.success(summary[0]['summary_text'])
+                except Exception as e:
+                    st.error(f"❌ Could not generate summary: {str(e)}")
     else:
         st.warning("Please paste text or upload a file.")
 
